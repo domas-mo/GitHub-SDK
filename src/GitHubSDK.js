@@ -7,6 +7,21 @@ class GitHubSDK {
         this.url = 'https://api.github.com';
     }
 
+    async getUser(user) {
+        try {
+            const promise = await fetch(`https://api.github.com/users/${user}`, this.options);
+
+            if(promise.ok) {
+                const result = await promise.json();
+                return result;
+            } else {
+                return Promise.reject(res);
+            }
+        } catch(err) {
+            throw new Error('User does not exists'); 
+        }
+    }
+
     options() {
         const options = {
             method: "GET",
