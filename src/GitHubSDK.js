@@ -22,6 +22,36 @@ class GitHubSDK {
         }
     }
 
+    async getRepo(user) {
+        try {
+            const promise = await fetch(`https://api.github.com/users/${user}/repos`, this.options);
+
+            if(promise.ok) {
+                const result = await promise.json();
+                return result;
+            } else {
+                return Promise.reject(res);
+            }
+        } catch(err) {
+            throw new Error('Repo does not exists'); 
+        }  
+    }
+
+    async getCommits(user, repo) {
+        try {
+            const promise = await fetch(`https://api.github.com/repos/${user}/${repo}/commits`, this.options);
+
+            if(promise.ok) {
+                const result = await promise.json();
+                return result;
+            } else {
+                return Promise.reject(res);
+            }
+        } catch(err) {
+            throw new Error('Commits does not exists'); 
+        }  
+    }
+    
     options() {
         const options = {
             method: "GET",
