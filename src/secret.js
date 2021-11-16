@@ -1,0 +1,1 @@
+export const secret = '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';

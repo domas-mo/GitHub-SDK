@@ -1,6 +1,5 @@
 global.fetch = require('node-fetch');
-
-const secret = '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';
+import { secret } from './secret';
 
 class GitHubSDK {
     constructor () {

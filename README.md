@@ -1,77 +1,67 @@
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+# GitHub-SDK
 
+GitHub-SDK is a project where you can get some information about user from GitHub-API and testing. The project is built using Test Driven Development methodology. It is a development process in which software requirements and functionalities are firstly converted to test cases. Next step is to build an implementation that passess both software requirement and test case. After all there is a code refactoring. It is so called 'red-green-refactor' cycle.
+
+In this project you can: 
+- get information about user;
+- get information about user's repositories;
+- get information about your commits to repositories;
+
+and then verify that everything is working correctly by using Jest.
+
+**Main features**:
+- JavaScript
+- Jest
+&nbsp;
+ 
+## 💡 Technologies
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+&nbsp;
+ 
+## 💿 Installation
+
+The project uses [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/). Having them installed, type into the terminal: `npm i` and then `npm test`.
 &nbsp;
 
+## 🤔 Solutions provided in the project
 
-# JavaScript: Testowanie
-
-Twoim zadaniem jest stworzenie czegoś na pograniczu Klienta czy [SDK](https://pl.wikipedia.org/wiki/Software_development_kit) dla [GitHub API](https://docs.github.com/en/rest) czyli bibioteki, która utałwi korzystywanie z dostępych rozwiązń.
-
-Chodzi o to, aby zamiast budować rozbudowane instrukcje typu:
+1. Example tests:
 ```
-const secret = 'secret-token';
-const url = `https://api.github.com/repos/devmentor-pl/task-js-basics/collaborators/bogolubow`;
-const promise = fetch(url, {
-    method: 'PUT',
-    credentials: 'same-origin',
-    redirect: 'follow',
-    headers: {
-        Accept: 'application/vnd.github.v3+json',
-        Authorization: `token ${secret}`,
-    },
-    body: JSON.stringify({
-        permission: 'pull'
-    }),
+it('return user', async () => {
+    const gh = new GitHubSDK();
+    const user = 'domas-mo';
+
+    const result = await gh.getUser(user);
+    expect(result.login).toBe(user)
 });
 ```
 
-Móc wykorzystać klasę, którą zbudujesz. Może się ona nazwyać np. `GitHubSDK`.
-Jeśli odpowiednio zaimplementujesz metodę o nazwie `.sendInvitation()` to wystarczy wtedy wywołać:
 ```
-const gh = new GitHubSDK('devmentor-pl', 'secret-token');
-gh.sendInvitation('task-js-basics', 'bogolubow');
+it('return user id', async () => {
+    const gh = new GitHubSDK();
+    const user = 'domas-mo';
+    const id = 77193918;
+
+    const result = await gh.getUser(user);
+    expect(result.id).toBe(id);
+});
 ```
-
-Wew. tej funkcji oczywiście będzie kod, który wstawiłem na samym początku jednak wtedy będziesz mógł go wykorzystać w wielu swoich projektach w wygodniejszy sposób. To pozwoli Ci zaoszczędzić sporo czasu i maksymalizować zyski.
-
-> Zwróć uwagę, że w moim `fetch()` jest kilka dodatkowych opcji. Nie jest to związane z samym GitHub API. To opcje dostepne dla `fetch()` więcej możesz przeczytać na [javascript.info](https://javascript.info/fetch-api).
-
-GitHub API posiada bardzo duże możliwości zarządzania kontem. To co robisz przy pomocy interfejsu, możesz również zrobić przy pomocy API, np.:
-
-- pobrać informacje o użytkowniku ([dokumentacja](https://docs.github.com/en/rest/reference/users#get-a-user))
-- pobrać informacje o repozytoriach ([dokumentajca](https://docs.github.com/en/rest/reference/repos#list-public-repositories))
-- porbrać informacje o commitach w repozytorium ([dokumentacja](https://docs.github.com/en/rest/reference/repos#list-commits))
-- pobrać informacje o komentarzach do commitów ([dokumentacja](https://docs.github.com/en/rest/reference/repos#list-commit-comments))
-- poberać informacje o błędach w repozytorium ([dokumentacja](https://docs.github.com/en/rest/reference/issues#list-repository-issues))
-- pobrać informacje o aktywności ([dokumentacja](https://docs.github.com/en/rest/reference/activity#list-repository-events))
-
-
-> Chciałbym również, abyś zwrócił uwagę, że opis dokumentacji jest oparty o przykłady dla `curl`. To dość powszechne i uważane za uniwersalne rozwiązanie. Dlatego powinieneś umieć przełożyć te przykłady na JavaScript. W tym może Ci pomóc [ta dokumentacja](https://idratherbewriting.com/learnapidoc/docapis_understand_curl.html). 
-
-Możesz również zarządzać swoim kontem jeśli [uwierzytelnisz](https://docs.github.com/en/rest/guides/basics-of-authentication) swoje zapytanie. Najprościej jest to zrobić [generując odpowiedni token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token). Następnie w nagłówku przesyłając jego zawartość tak jak w przykładzie na samym początku.
-
-Jak widzisz jest mnóstwo możliwości. Ty powinieneś wybrać minimalną funkcjonalność dla swojej biblioteki. Taką, która umożliwi Ci jś wykorzystać do tworzenia własnego portofio. Portfolio, które samo się aktualizuje czerpiąc dane o projektach ze swojego konta GitHub.
-
-Biblioteka powinna być sworzona zgodnie z metodyką TDD czyli red-green-refaktor. Napierw piszesz testy, które musisz sam skonfigurować. Potem dopiero piszesz implementację. Niech Twoje testy określają jaką funkcjonalność będzie posiadać Twoja biblioteka.
-
-Pamiętaj, że najprościej jest napisać rozwiązanie pod konkretny przypadek, a dopiero potem kombinować z parametrami funkcji. Zgodnie z krokami: 
-
-- RED: napisanie testu
-- GREEN: implementacja konkretnego przypadku
-- REFACTOR: uogólnienie rozwiązania
-
-> **Uwaga!** Ponownie rozmyślnie łamiemy zasadę [FIRST](https://devszczepaniak.pl/testy-jednostkowe-first/). Tym razem w punkcie *Isolated* a nawet *Fast*. Będziemy wykonywać testy na żywym organiźmie tj. metoda do wysyłania zaproszenia będzie faktycznie wysyłać zaproszenie czyli nasze testy będą komunikowac się z API. Ten problem znów jest rozwiązywany przez [Mocki](https://devenv.pl/jest-sposoby-mockowania/), które będziemy omawiać w późniejszym terminie.
-
-Zadaniem dodatkowym (na teraz lub potem) będzie stworzenie przynajmniej szkieletu "samoaktualizującego się" portfolio, które na pewno zostanie docenione przez Twojego potencjalnego pracodawcę.
-
-PS. Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zainstalowany np. `node-fetch` ([StackOverflow](https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined)). Pamiętaj, aby zaimportować i przypisać do odpowiedniego elementu np. `global.fetch = require("node-fetch");`.
-
-
-
 &nbsp;
 
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+## 🙋‍♂️ Feel free to contact me
+
+Write sth nice ;) Find me on...
+
+<p align="center">
+	<a href="https://github.com/domas-mo"><img alt="github" width="10%" style="padding:5px" src="https://img.icons8.com/clouds/100/000000/github.png"/></a>
+	<a href="https://www.linkedin.com/in/dominik-mo/"><img alt="linkedin" width="10%" style="padding:5px" src="https://img.icons8.com/clouds/100/000000/linkedin.png"/></a>
+    <a href="mailto:dominik.mozdzen1@gmail.com"><img alt="linkedin" width="10%" style="padding:5px" src="https://img.icons8.com/clouds/100/000000/email.png"/></a>
+</p>
+&nbsp;
+
+## 👏 Thanks / Special thanks / Credits
+
+To my [Mentor - devmentor.pl](https://devmentor.pl/) - for providing me with this task and for code review.
+
